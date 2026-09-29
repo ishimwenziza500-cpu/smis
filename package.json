@@ -1,0 +1,21 @@
+{
+  "name": "smis-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PostgreSQL-backed HTTP API for the SMIS workspace",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --env-file-if-exists=.env --watch server.js",
+    "test": "node --test",
+    "migrate": "node --env-file-if-exists=.env scripts/migrate.js",
+    "create-admin": "node --env-file-if-exists=.env scripts/create-admin.js",
+    "create-user": "node --env-file-if-exists=.env scripts/create-user.js"
+  },
+  "engines": {
+    "node": ">=22.9"
+  },
+  "dependencies": {
+    "pg": "^8.16.3"
+  }
+}
