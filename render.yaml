@@ -2,11 +2,10 @@ services:
   - type: web
     name: smis
     runtime: node
-    plan: starter
+    plan: free
     region: oregon
     buildCommand: npm ci
-    preDeployCommand: npm run migrate
-    startCommand: npm start
+    startCommand: npm run migrate && npm start
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
@@ -15,20 +14,8 @@ services:
       - key: HOST
         value: 0.0.0.0
       - key: DATABASE_SSL
-        value: "false"
+        value: "true"
       - key: SESSION_SECRET
         generateValue: true
       - key: DATABASE_URL
-        fromDatabase:
-          name: smis-db
-          property: connectionString
-
-databases:
-  - name: smis-db
-    databaseName: smis
-    user: smis
-    plan: basic-256mb
-    region: oregon
-    postgresMajorVersion: 16
-    diskSizeGB: 1
-    ipAllowList: []
+        sync: false
