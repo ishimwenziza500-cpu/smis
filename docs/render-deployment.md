@@ -26,9 +26,8 @@ current provider quotas and terms before proceeding.
    the response is successful only when PostgreSQL is reachable.
 4. After the first successful deploy (so the startup migration has completed),
    create the initial admin from a trusted Windows PowerShell terminal in the
-   project folder. The following prompts for the Neon URL without echoing it,
-   creates a temporary CLI-only session secret, and prompts for the admin
-   password without echoing it:
+   project folder. The following prompts for the Neon URL without echoing it
+   and creates a temporary CLI-only session secret:
 
    ```powershell
    $secureUrl = Read-Host "Neon PostgreSQL connection string" -AsSecureString
@@ -40,23 +39,33 @@ current provider quotas and terms before proceeding.
    }
    $env:DATABASE_SSL = "true"
    $secretBytes = New-Object byte[] 48
-   [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($secretBytes)
+   $rng = [Security.Cryptography.RandomNumberGenerator]::Create()
+   try {
+     $rng.GetBytes($secretBytes)
+   } finally {
+     $rng.Dispose()
+   }
    $env:SESSION_SECRET = [Convert]::ToBase64String($secretBytes)
    npm run create-admin -- admin@example.org "School Administrator"
    ```
 
-   The CLI refuses to create a second admin. While the environment variables
-   remain set in this terminal, use `npm run create-user` to provision the
-   `registrar`, `inventory`, or `viewer` roles if needed. When finished,
-   remove the connection string and temporary secret from the terminal:
+   Enter the admin password at the hidden prompt. The CLI refuses to create a
+   second admin. While the environment variables remain set in this terminal,
+   use `npm run create-user` to provision the `registrar`, `inventory`, or
+   `viewer` roles if needed.
+5. To reset an existing admin password, run
+   `npm run reset-admin -- admin@example.org` from a trusted computer. If
+   `DATABASE_URL` is not configured, the reset command prompts for the Neon
+   URL and new password without echoing input; it also signs the admin out of
+   all active sessions. When finished, remove any configured credentials:
 
    ```powershell
-   Remove-Item Env:DATABASE_URL, Env:DATABASE_SSL, Env:SESSION_SECRET
+   Remove-Item Env:DATABASE_URL, Env:DATABASE_SSL, Env:SESSION_SECRET -ErrorAction SilentlyContinue
    ```
 
    Do not paste the connection string or passwords into chat, source control,
    or command arguments.
-5. Open the HTTPS service URL, sign in, and run the verification checklist.
+6. Open the HTTPS service URL, sign in, and run the verification checklist.
 
 The application is same-origin; do not set `CORS_ORIGIN`. Render supplies the
 public `PORT`. `HOST=0.0.0.0` lets the service accept Render's health probes.
@@ -87,9 +96,9 @@ Keep `DATABASE_URL` and the generated session secret private.
 - The schema migration creates missing objects but is not a migration
   framework for changing existing columns or constraints. For future schema
   changes, create and test explicit forward migrations before deploying them.
-- Account passwords can currently be reset by an authorized operator by
-  provisioning a replacement user, or by a controlled database password-hash
-  update workflow. Keep account recovery out of public routes.
+- Reset administrator passwords with `npm run reset-admin -- <admin-email>`
+  from a trusted computer with database access. Keep account recovery out of
+  public routes.
 - Before importing real records, confirm the full school requirements,
   currency, applicable privacy/data-retention obligations, and the school's
   backup and incident-response process.

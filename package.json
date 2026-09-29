@@ -10,7 +10,8 @@
     "test": "node --test",
     "migrate": "node --env-file-if-exists=.env scripts/migrate.js",
     "create-admin": "node --env-file-if-exists=.env scripts/create-admin.js",
-    "create-user": "node --env-file-if-exists=.env scripts/create-user.js"
+    "create-user": "node --env-file-if-exists=.env scripts/create-user.js",
+    "reset-admin": "node --env-file-if-exists=.env scripts/reset-admin.js"
   },
   "engines": {
     "node": ">=22.9"

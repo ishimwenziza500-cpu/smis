@@ -81,6 +81,20 @@ npm run create-user -- inventory@example.org "Inventory Manager" inventory
 npm run create-user -- viewer@example.org "Read Only User" viewer
 ```
 
+Reset an existing administrator's password from a trusted computer with
+database access:
+
+```powershell
+npm run reset-admin -- admin@example.org
+```
+
+If `DATABASE_URL` is not configured locally, the command prompts for the Neon
+connection string with input hidden, then prompts for the new password. Set
+`DATABASE_SSL=false` only when connecting to a trusted local PostgreSQL
+server. The command only updates an existing admin and revokes that account's
+active sessions. Never include passwords or database credentials in command
+arguments.
+
 ## Staff role permissions
 
 | Role | Read | Add / edit | Delete |

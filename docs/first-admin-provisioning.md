@@ -14,9 +14,15 @@ first administrator out of band with the `create-admin` CLI after applying
    deployment CLI for account recovery.
 4. Provision additional named staff accounts out of band with
    `npm run create-user -- <email> "<full name>" <registrar|inventory|viewer>`.
+5. If an administrator forgets a password, run
+   `npm run reset-admin -- <admin-email>` from a trusted environment with
+   database access. If `DATABASE_URL` is not configured, the CLI prompts for
+   it without echoing input, then prompts for the replacement password. The
+   CLI only updates an existing admin account and revokes its active sessions.
 
 The administrator CLI refuses to create a second administrator; additional
 staff-account creation requires an active administrator to exist. Passwords
 are stored as Node scrypt hashes. Sessions are stored as hashed tokens in
 PostgreSQL and expire after 12 hours. There is intentionally no public signup,
-default password, or HTTP bootstrap endpoint.
+default password, or HTTP bootstrap endpoint. Keep the database URL private
+and never pass passwords as command-line arguments.

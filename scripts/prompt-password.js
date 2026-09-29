@@ -1,8 +1,11 @@
 "use strict";
 
-function readPassword() {
+function readHiddenValue(label, allowStdin = false) {
   if (!process.stdin.isTTY || typeof process.stdin.setRawMode !== "function") {
-    process.stdout.write("Password (read from stdin): ");
+    if (!allowStdin) {
+      return Promise.reject(new Error(`${label} requires an interactive terminal.`));
+    }
+    process.stdout.write(`${label} (read from stdin): `);
     return new Promise((resolve, reject) => {
       let input = "";
       process.stdin.setEncoding("utf8");
@@ -12,7 +15,7 @@ function readPassword() {
     });
   }
   return new Promise((resolve, reject) => {
-    process.stdout.write("Password (input hidden): ");
+    process.stdout.write(`${label} (input hidden): `);
     process.stdin.setRawMode(true);
     process.stdin.resume();
     let value = "";
@@ -39,4 +42,8 @@ function readPassword() {
   });
 }
 
-module.exports = { readPassword };
+function readPassword() {
+  return readHiddenValue("Password", true);
+}
+
+module.exports = { readHiddenValue, readPassword };
