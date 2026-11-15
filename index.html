@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f5f6f2" />
-    <title>SMIS — School Management</title>
+    <meta name="description" content="APEKI TUMBA TSS provides practical technical education and career-focused learning for Rwanda's future." />
+    <meta name="theme-color" content="#0b1f33" />
+    <title>School Management | APEKI TUMBA TSS</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,24 +13,248 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div id="app"></div>
-    <dialog id="record-dialog" class="record-dialog">
-      <form id="record-form" method="dialog">
-        <div class="dialog-heading">
-          <div>
-            <span class="eyebrow">RECORD MANAGEMENT</span>
-            <h2 id="dialog-title">Add record</h2>
+    <div class="site-shell">
+      <header class="site-header">
+        <div class="brand-wrap">
+          <div class="brand-mark" aria-label="APEKI TUMBA TSS logo">A</div>
+          <div class="brand-copy">
+            <span class="brand-name">APEKI TUMBA TSS</span>
+            <span class="brand-tag">School Management</span>
           </div>
-          <button class="icon-button" type="button" data-close-dialog aria-label="Close dialog">×</button>
         </div>
-        <div id="form-fields" class="form-fields"></div>
-        <div class="dialog-actions">
-          <button class="button button-quiet" type="button" data-close-dialog>Cancel</button>
-          <button class="button button-primary" type="submit">Save record <span aria-hidden="true">↗</span></button>
+
+        <div class="site-meta">
+          <span class="meta-dot"></span>
+          <span class="meta-location">Tumba, Rulindo District, Rwanda</span>
         </div>
-      </form>
-    </dialog>
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="./app.js"></script>
+
+        <div class="brand-heading-wrap">
+          <h1>Modern Education<br />for a Brighter Future</h1>
+        </div>
+      </header>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <div class="nav-left">
+          <a href="#">Home</a>
+          <a href="#about">About</a>
+          <a href="#programs">Programs</a>
+          <a href="#staff">Staff</a>
+          <a href="#news">News</a>
+          <a href="#events">Events</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="nav-right">
+          <a href="#admissions">Admissions</a>
+          <button type="button" class="nav-button">Apply Now</button>
+        </div>
+      </nav>
+
+      <main class="landing-page">
+        <section class="showcase-grid" aria-label="School showcase">
+          <article class="feature-card hero-card">
+            <div class="hero-content">
+              <span class="eyebrow">Skills for Tomorrow</span>
+              <h2>Skills for Today.<br /><span>Innovation for Tomorrow.</span></h2>
+              <p>
+                Empowering students with practical technical skills, knowledge, and confidence to build successful careers and contribute to Rwanda's future.
+              </p>
+              <div class="cta-row">
+                <a href="#programs" class="primary-button">Explore Our Programs</a>
+                <a href="#admissions" class="secondary-button">Apply for Admission</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="feature-card about-card" id="about">
+            <div class="card-media">
+              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="Students learning together in a classroom" />
+            </div>
+            <div class="card-copy">
+              <span class="mini-label">About the School</span>
+              <h3>Education that builds skills and future careers.</h3>
+              <p>Our school combines practical learning, technical training, and academic excellence to prepare young people for the demands of modern Rwanda and the wider world.</p>
+            </div>
+          </article>
+
+          <article class="feature-card program-card" id="programs">
+            <div class="card-topline">
+              <span class="mini-label">Programs</span>
+              <a href="#">Learn More</a>
+            </div>
+            <div class="program-list">
+              <div class="program-item">
+                <div class="program-thumb">
+                  <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80" alt="Computer technology learning" />
+                </div>
+                <div class="program-meta">
+                  <strong>Computer Technology</strong>
+                  <span>Digital skills</span>
+                </div>
+              </div>
+              <div class="program-item">
+                <div class="program-thumb">
+                  <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=600&q=80" alt="Mechanical engineering workshop" />
+                </div>
+                <div class="program-meta">
+                  <strong>Mechanical Engineering</strong>
+                  <span>Workshop skills</span>
+                </div>
+              </div>
+              <div class="program-item">
+                <div class="program-thumb">
+                  <img src="https://images.unsplash.com/photo-1517486800578-4538f0c0460f?auto=format&fit=crop&w=600&q=80" alt="Electrical and construction skills" />
+                </div>
+                <div class="program-meta">
+                  <strong>Electrical & Construction</strong>
+                  <span>Applied learning</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="info-grid" aria-label="School highlights">
+          <article class="info-card staff-card" id="staff">
+            <div class="card-topline">
+              <span class="mini-label">Our Staff / Teachers</span>
+              <a href="#">See all</a>
+            </div>
+            <div class="staff-row">
+              <div class="staff-photo">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80" alt="Teacher portrait" />
+              </div>
+              <div class="staff-photo">
+                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80" alt="Teacher portrait" />
+              </div>
+              <div class="staff-photo">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80" alt="Teacher portrait" />
+              </div>
+              <div class="staff-photo">
+                <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=500&q=80" alt="Teacher portrait" />
+              </div>
+            </div>
+            <div class="staff-list">
+              <div><span>Mr. N. J.</span><small>Mathematics</small></div>
+              <div><span>Mr. G. K.</span><small>Computer Science</small></div>
+              <div><span>Mrs. M. J.</span><small>Physics</small></div>
+              <div><span>Mr. J. T.</span><small>English</small></div>
+            </div>
+          </article>
+
+          <article class="info-card news-card" id="news">
+            <div class="card-topline">
+              <span class="mini-label">Latest News</span>
+              <a href="#">Read all</a>
+            </div>
+            <div class="article-grid">
+              <div class="article-visual">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Students during a workshop" />
+              </div>
+              <div class="article-text">
+                <span class="article-date">April 24, 2025</span>
+                <h4>Student workshop builds practical innovation thinking.</h4>
+                <a href="#">Read more</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="info-card event-card" id="events">
+            <div class="card-topline">
+              <span class="mini-label">Upcoming Events</span>
+              <a href="#">See calendar</a>
+            </div>
+            <ul class="event-list">
+              <li>
+                <span class="event-date">15<br /><small>MAY</small></span>
+                <div>
+                  <strong>Innovation Fair</strong>
+                  <small>Open to students, parents, and industry partners</small>
+                </div>
+              </li>
+              <li>
+                <span class="event-date">22<br /><small>MAY</small></span>
+                <div>
+                  <strong>Career Guidance</strong>
+                  <small>Industry mentoring and apprenticeship orientation</small>
+                </div>
+              </li>
+              <li>
+                <span class="event-date">30<br /><small>MAY</small></span>
+                <div>
+                  <strong>School Open Day</strong>
+                  <small>Meet faculty and explore technical programs</small>
+                </div>
+              </li>
+            </ul>
+          </article>
+
+          <article class="info-card gallery-card" id="gallery">
+            <div class="card-topline">
+              <span class="mini-label">Our Gallery</span>
+              <a href="#">View more</a>
+            </div>
+            <div class="gallery-mosaic">
+              <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=700&q=80" alt="Students in workshop" />
+              <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80" alt="Classroom activity" />
+              <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=700&q=80" alt="Technical education" />
+              <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=700&q=80" alt="Students collaborating" />
+            </div>
+          </article>
+        </section>
+
+        <section class="bottom-grid" aria-label="School value and admissions">
+          <article class="info-card values-card">
+            <div class="card-topline">
+              <span class="mini-label">Our Story</span>
+              <a href="#">Read our mission</a>
+            </div>
+            <h3>Building practical confidence and technical capability.</h3>
+            <p>We equip learners with the mindset, technical skills, and professional discipline needed to thrive in a competitive and changing world.</p>
+            <div class="value-stats">
+              <div>
+                <strong>128</strong>
+                <span>Students</span>
+              </div>
+              <div>
+                <strong>12</strong>
+                <span>Teachers</span>
+              </div>
+              <div>
+                <strong>45</strong>
+                <span>Skills Labs</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="info-card admission-card" id="admissions">
+            <div class="card-topline">
+              <span class="mini-label">Admissions</span>
+              <a href="#">Apply now</a>
+            </div>
+            <h3>Start your journey at APEKI TUMBA TSS</h3>
+            <ol>
+              <li>Explore programs</li>
+              <li>Check requirements</li>
+              <li>Apply</li>
+              <li>Admission process</li>
+            </ol>
+            <a href="#" class="primary-button small-button">Begin Application</a>
+          </article>
+
+          <article class="info-card contact-card" id="contact">
+            <div class="card-topline">
+              <span class="mini-label">Contact</span>
+              <a href="#">Get in touch</a>
+            </div>
+            <ul class="contact-list">
+              <li><strong>Phone:</strong> +250 000 000 000</li>
+              <li><strong>Email:</strong> info@apekitumbatss.rw</li>
+              <li><strong>Location:</strong> Tumba, Rulindo District, Rwanda</li>
+            </ul>
+          </article>
+        </section>
+      </main>
+    </div>
   </body>
 </html>
