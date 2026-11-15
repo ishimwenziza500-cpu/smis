@@ -30,6 +30,7 @@ let appReady = false;
 let searchTimeout;
 let searchSequence = 0;
 let toastTimeout;
+let publicView = "home";
 
 function canReadCollection(key) {
   if (currentUser?.role === "admin") return true;
@@ -139,18 +140,18 @@ function shortDate(value) {
 }
 
 function render() {
-  document.title = activePage === "website" ? "Brightwood School" : "SMIS — School Management";
+  document.title = activePage === "website" ? "APEKI TUMBA TSS" : "APEKI TUMBA TSS — School Management";
   const root = document.querySelector("#app");
   root.innerHTML = activePage === "website" ? renderWebsite() : !appReady ? renderLoading() : !currentUser ? renderLogin() : renderShell();
   bindPageEvents();
 }
 
 function renderLoading() {
-  return `<main class="auth-page"><section class="auth-card"><span class="brand-mark">b.</span><h1>Connecting to your school</h1><p>Loading your secure workspace…</p></section></main>`;
+  return `<main class="auth-page"><section class="auth-card"><span class="brand-mark">A</span><h1>Connecting to your school</h1><p>Loading your secure workspace…</p></section></main>`;
 }
 
 function renderLogin() {
-  return `<main class="auth-page"><form class="auth-card" id="login-form"><span class="brand-mark">b.</span><span class="eyebrow">BRIGHTWOOD SCHOOL</span><h1>Welcome back</h1><p>Sign in to your staff workspace.</p><label class="form-field"><span>Work email</span><input name="email" type="email" autocomplete="username" required /></label><label class="form-field"><span>Password</span><input name="password" type="password" autocomplete="current-password" required /></label><div class="auth-error" id="auth-error" role="alert"></div><button class="button button-primary auth-submit" type="submit">Sign in <span>↗</span></button><a class="auth-public-link" href="#" data-page="website">Visit the public school website →</a></form></main>`;
+  return `<main class="auth-page"><form class="auth-card" id="login-form"><span class="brand-mark">A</span><span class="eyebrow">APEKI TUMBA TSS</span><h1>Welcome back</h1><p>Sign in to your staff workspace.</p><label class="form-field"><span>Work email</span><input name="email" type="email" autocomplete="username" required /></label><label class="form-field"><span>Password</span><input name="password" type="password" autocomplete="current-password" required /></label><div class="auth-error" id="auth-error" role="alert"></div><button class="button button-primary auth-submit" type="submit">Sign in <span>↗</span></button><a class="auth-public-link" href="#" data-page="website">Visit the public website →</a></form></main>`;
 }
 
 function renderShell() {
@@ -164,13 +165,13 @@ function renderShell() {
   return `
     <div class="app-shell">
       <aside class="sidebar">
-        <a class="brand" href="#" data-page="dashboard" aria-label="SMIS overview"><span class="brand-mark">b.</span><span class="brand-copy"><strong>brightwood</strong><small>MANAGEMENT SYSTEM</small></span></a>
-        <div class="school-switcher"><span class="school-avatar">B</span><span><strong>Brightwood School</strong><small>School workspace</small></span><span class="switch-arrow">⌄</span></div>
+        <a class="brand" href="#" data-page="dashboard" aria-label="APEKI TUMBA TSS overview"><span class="brand-mark">A</span><span class="brand-copy"><strong>APEKI TUMBA</strong><small>MANAGEMENT SYSTEM</small></span></a>
+        <div class="school-switcher"><span class="school-avatar">A</span><span><strong>APEKI TUMBA TSS</strong><small>School workspace</small></span><span class="switch-arrow">⌄</span></div>
         <nav class="primary-nav" aria-label="Main navigation">${nav}</nav>
-        <div class="sidebar-bottom"><div class="help-card"><span class="help-icon">✳</span><strong>Here to help</strong><p>Questions about your school records?</p><a href="mailto:hello@brightwood.edu">Contact support <span>↗</span></a></div><div class="profile"><div class="profile-avatar">${initials(currentUser?.name || currentUser?.email)}</div><span><strong>${escapeHtml(currentUser?.name || currentUser?.email)}</strong><small>${escapeHtml(roleName(currentUser?.role))}</small></span><button class="more-button" aria-label="More profile options">···</button></div></div>
+        <div class="sidebar-bottom"><div class="help-card"><span class="help-icon">✳</span><strong>Here to help</strong><p>Questions about your school records?</p><a href="mailto:hello@apekitumbatss.rw">Contact support <span>↗</span></a></div><div class="profile"><div class="profile-avatar">${initials(currentUser?.name || currentUser?.email)}</div><span><strong>${escapeHtml(currentUser?.name || currentUser?.email)}</strong><small>${escapeHtml(roleName(currentUser?.role))}</small></span><button class="more-button" aria-label="More profile options">···</button></div></div>
       </aside>
       <main class="main-panel">
-        <header class="topbar"><div class="breadcrumb">Brightwood School <span>/</span> <strong>${activePage === "dashboard" ? "Overview" : definitions[activePage]?.title || "Overview"}</strong></div><div class="topbar-actions"><span class="today-label">${new Intl.DateTimeFormat("en", { weekday: "short", month: "short", day: "numeric" }).format(new Date())}</span><button class="website-button" data-page="website"><span>↗</span> Public website</button><button class="signout-button" id="signout-button">Sign out</button></div></header>
+        <header class="topbar"><div class="breadcrumb">APEKI TUMBA TSS <span>/</span> <strong>${activePage === "dashboard" ? "Overview" : definitions[activePage]?.title || "Overview"}</strong></div><div class="topbar-actions"><span class="today-label">${new Intl.DateTimeFormat("en", { weekday: "short", month: "short", day: "numeric" }).format(new Date())}</span><button class="website-button" data-page="website"><span>↗</span> Public website</button><button class="signout-button" id="signout-button">Sign out</button></div></header>
         <section class="page-content">${activePage === "dashboard" ? renderDashboard() : renderListPage(activePage)}</section>
         <footer class="data-note"><span>◈</span> Secure school workspace · Changes are saved to your school database.</footer>
       </main>
@@ -202,9 +203,18 @@ function renderDashboard() {
     : recentDistributions
       ? dashboardStats.distributions?.recent || [...data.distributions].slice(-4).reverse()
       : [];
+  const quickActions = [
+    canReadCollection("students") ? `<button class="quick-action-card" data-page="students"><span>♙</span><strong>Students</strong><small>Manage registration</small></button>` : "",
+    canReadCollection("parents") ? `<button class="quick-action-card" data-page="parents"><span>♧</span><strong>Parents</strong><small>Track guardians</small></button>` : "",
+    canReadCollection("staff") ? `<button class="quick-action-card" data-page="staff"><span>☰</span><strong>Staff</strong><small>Directory and profiles</small></button>` : "",
+    canReadCollection("items") ? `<button class="quick-action-card" data-page="items"><span>▤</span><strong>School items</strong><small>Catalogue and pricing</small></button>` : "",
+    canReadCollection("payments") ? `<button class="quick-action-card" data-page="payments"><span>＄</span><strong>Payments</strong><small>Receipts and balances</small></button>` : "",
+    canReadCollection("transport") ? `<button class="quick-action-card" data-page="transport"><span>⌁</span><strong>Transport</strong><small>Routes and pricing</small></button>` : ""
+  ].filter(Boolean);
   return `
     <div class="welcome-row"><div><span class="eyebrow">${new Intl.DateTimeFormat("en", { weekday: "long", month: "long", day: "numeric", year: "numeric" }).format(new Date()).toUpperCase()}</span><h1>Good morning, ${escapeHtml(currentUser?.name || currentUser?.email || "there")} <span>✳</span></h1><p>Here’s what’s happening at your school today.</p></div>${canWriteCollection("students") ? `<button class="button button-primary" data-open-form="students">＋ Register a student</button>` : ""}</div>
     <div class="summary-grid">${summaryCards.join("")}</div>
+    <div class="quick-action-grid">${quickActions.join("")}</div>
     <div class="dashboard-grid">
       <section class="panel activity-panel"><div class="panel-heading"><div><span class="eyebrow">LATEST ACTIVITY</span><h2>${recentPayments ? "Recent payments" : recentDistributions ? "Recent item distribution" : "Recent activity"}</h2></div>${recentPayments || recentDistributions ? `<button class="text-link" data-page="${recentPayments ? "payments" : "distributions"}">View all <span>→</span></button>` : ""}</div>
         ${recent.length ? `<div class="activity-list">${recent.map((record) => `<div class="activity-row"><div class="activity-icon">${recentPayments ? "＄" : "⇄"}</div><div class="activity-copy"><strong>${escapeHtml(record.student)}</strong><small>${escapeHtml(recentPayments ? record.purpose : record.item)} · ${shortDate(recentPayments ? record.date : record.issued)}</small></div><div class="activity-amount">${recentPayments ? money(record.amount) : `${record.quantity} issued`}<small>${badge(record.status)}</small></div></div>`).join("")}</div>` : emptyState(recentPayments ? "No payments recorded yet." : recentDistributions ? "No recent item distributions." : "Activity details are not available for this staff role.")}
@@ -265,11 +275,229 @@ function formatCell(field, value) {
 }
 
 function renderWebsite() {
-  return `<div class="public-site"><header class="public-nav"><a href="#" class="public-brand"><span class="brand-mark">b.</span><strong>BRIGHTWOOD <span>SCHOOL</span></strong></a><nav><a href="#our-school">Our school</a><a href="#learning">Learning</a><a href="#contact">Contact</a></nav><button class="button button-primary" data-page="dashboard">Staff sign in <span>↗</span></button></header>
-    <main><section class="public-hero"><div class="hero-copy"><span class="eyebrow">A PLACE TO GROW, EVERY DAY</span><h1>Big futures<br />start <em>right here.</em></h1><p>Curious minds. Kind hearts. A community where every child finds their own way to shine.</p><div class="hero-actions"><a class="button button-primary" href="#contact">Discover Brightwood <span>↗</span></a><a class="hero-secondary" href="#our-school">Get to know us <span>↓</span></a></div><div class="hero-proof"><div class="proof-avatars"><span>G</span><span>A</span><span>M</span></div><p><strong>A school community</strong><br />built around every child</p></div></div><div class="hero-art"><div class="hero-image"><div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><div class="art-label"><span>✳</span><div><strong>Room to explore</strong><small>Learning looks different for everyone</small></div></div><span class="art-caption">BRIGHTWOOD · EST. 1998</span></div><span class="doodle doodle-one">✳</span><span class="doodle doodle-two">↗</span><span class="hero-sticker">A SCHOOL<br />THAT FEELS<br />LIKE HOME</span></div></section>
-    <section class="public-values" id="our-school"><div><span class="value-icon">⌂</span><strong>A welcoming community</strong><small>Every family belongs here.</small></div><div><span class="value-icon">✳</span><strong>Curiosity comes first</strong><small>Discover what you love to learn.</small></div><div><span class="value-icon">♡</span><strong>Care in every detail</strong><small>Growing together, every day.</small></div></section>
-    <section class="public-about" id="learning"><div class="about-heading"><span class="eyebrow">A LITTLE ABOUT US</span><h2>More than a school.<br /><em>A place to belong.</em></h2></div><div class="about-copy"><p>At Brightwood, learning is an adventure we take together. Our teachers create a thoughtful, joyful environment where children can ask big questions, try new things, and build the confidence to be themselves.</p><a href="#contact" class="text-link">Come say hello <span>→</span></a></div></section>
-    <section class="public-contact" id="contact"><div><span class="eyebrow">YOUR NEXT CHAPTER STARTS HERE</span><h2>We’d love to meet you.</h2><p>Talk to our friendly team about school visits and registration.</p></div><a class="button button-light" href="mailto:hello@brightwood.edu">Get in touch <span>↗</span></a></section></main><footer class="public-footer"><a href="#" class="public-brand"><span class="brand-mark">b.</span><strong>BRIGHTWOOD <span>SCHOOL</span></strong></a><span>© ${new Date().getFullYear()} Brightwood School</span><a href="mailto:hello@brightwood.edu">hello@brightwood.edu</a></footer></div>`;
+  const page = publicView || "home";
+  const pageContent = {
+    home: `
+      <main>
+        <section class="public-hero">
+          <div class="hero-copy">
+            <span class="eyebrow">A PLACE TO GROW, EVERY DAY</span>
+            <h1>Skills for Today.<br />Innovation for <em>Tomorrow.</em></h1>
+            <p>Empowering students with practical technical skills, knowledge, and confidence to build successful careers and contribute to Rwanda's future.</p>
+            <div class="hero-actions">
+              <button class="button button-primary" data-public-view="programs">Explore our programs <span>↗</span></button>
+              <button class="hero-secondary" data-public-view="admissions">Apply for admission <span>↓</span></button>
+            </div>
+            <div class="hero-proof">
+              <div class="proof-avatars"><span>A</span><span>T</span><span>T</span></div>
+              <p><strong>Technical education</strong><br />for a brighter future</p>
+            </div>
+          </div>
+          <div class="hero-art">
+            <div class="hero-image">
+              <div class="sun"></div>
+              <div class="hill hill-back"></div>
+              <div class="hill hill-front"></div>
+              <div class="art-label"><span>✳</span><div><strong>Practical learning</strong><small>Career-ready skills and technical confidence</small></div></div>
+              <span class="art-caption">APEKI TUMBA TSS · TUMBA, RULINDO</span>
+            </div>
+            <span class="doodle doodle-one">✳</span>
+            <span class="doodle doodle-two">↗</span>
+            <span class="hero-sticker">BUILDING<br />FUTURES<br />WITH SKILLS</span>
+          </div>
+        </section>
+
+        <section class="public-values" id="our-school">
+          <div><span class="value-icon">⌂</span><strong>Technical learning</strong><small>Practical, job-focused education.</small></div>
+          <div><span class="value-icon">✳</span><strong>Career readiness</strong><small>Built for Rwanda's future.</small></div>
+          <div><span class="value-icon">♡</span><strong>Community impact</strong><small>Growing together, every day.</small></div>
+        </section>
+
+        <section class="public-about" id="learning">
+          <div class="about-heading"><span class="eyebrow">A LITTLE ABOUT US</span><h2>More than a school.<br /><em>A place to prepare.</em></h2></div>
+          <div class="about-copy"><p>At APEKI TUMBA TSS, we focus on practical technical education, personal discipline, and future-focused learning that helps students become confident, capable contributors to their communities.</p><button class="text-link" data-public-view="about">Learn our story <span>→</span></button></div>
+        </section>
+
+        <section class="public-contact" id="contact">
+          <div><span class="eyebrow">YOUR NEXT CHAPTER STARTS HERE</span><h2>We’d love to meet you.</h2><p>Talk to our friendly team about school visits, programs, and admissions.</p></div>
+          <a class="button button-light" href="mailto:hello@apekitumbatss.rw">Get in touch <span>↗</span></a>
+        </section>
+      </main>
+    `,
+    about: `
+      <main class="public-content-page">
+        <section class="public-page-header">
+          <span class="eyebrow">ABOUT APEKI TUMBA TSS</span>
+          <h1>School story, mission, and future focus</h1>
+        </section>
+        <div class="public-page-grid">
+          <article class="public-card feature-card large-card">
+            <h2>Our story</h2>
+            <p>APEKI TUMBA TSS is a technical and vocational learning institution rooted in practical education, discipline, and community development. We help students build confidence, technical abilities, and career direction.</p>
+            <p>[Add official school information]</p>
+          </article>
+          <article class="public-card feature-card">
+            <h3>Mission</h3>
+            <p>To equip learners with practical technical skills, strong values, and the confidence to thrive in work and society.</p>
+          </article>
+          <article class="public-card feature-card">
+            <h3>Vision</h3>
+            <p>To become a leading technical education institution that produces capable, innovative, and socially responsible graduates.</p>
+          </article>
+          <article class="public-card feature-card">
+            <h3>Motto</h3>
+            <p>Skills for Today. Innovation for Tomorrow.</p>
+          </article>
+        </div>
+      </main>
+    `,
+    programs: `
+      <main class="public-content-page">
+        <section class="public-page-header">
+          <span class="eyebrow">PROGRAMS</span>
+          <h1>Technical learning pathways for the future</h1>
+        </section>
+        <div class="public-program-grid">
+          <article class="public-card program-tile">
+            <div class="program-image" style="background-image:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80')"></div>
+            <div class="program-copy"><h3>Computer Technology</h3><p>Digital skills, software literacy, and practical IT applications.</p><span>Department: ICT</span></div>
+          </article>
+          <article class="public-card program-tile">
+            <div class="program-image" style="background-image:url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=900&q=80')"></div>
+            <div class="program-copy"><h3>Mechanical Engineering</h3><p>Workshop practice, machine operation, and technical problem-solving.</p><span>Department: Engineering</span></div>
+          </article>
+          <article class="public-card program-tile">
+            <div class="program-image" style="background-image:url('https://images.unsplash.com/photo-1517486800578-4538f0c0460f?auto=format&fit=crop&w=900&q=80')"></div>
+            <div class="program-copy"><h3>Electrical & Construction</h3><p>Applied installation, maintenance, and practical construction skills.</p><span>Department: Technical Skills</span></div>
+          </article>
+        </div>
+      </main>
+    `,
+    staff: `
+      <main class="public-content-page">
+        <section class="public-page-header">
+          <span class="eyebrow">OUR STAFF</span>
+          <h1>Dedicated educators and technical mentors</h1>
+        </section>
+        <div class="public-staff-grid">
+          <article class="public-card person-card">
+            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=80" alt="Teacher portrait" />
+            <div><h3>Mr. N. J.</h3><p>Mathematics Teacher</p></div>
+          </article>
+          <article class="public-card person-card">
+            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=80" alt="Teacher portrait" />
+            <div><h3>Mr. G. K.</h3><p>Computer Science Teacher</p></div>
+          </article>
+          <article class="public-card person-card">
+            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=80" alt="Teacher portrait" />
+            <div><h3>Mrs. M. J.</h3><p>Physics Teacher</p></div>
+          </article>
+        </div>
+      </main>
+    `,
+    news: `
+      <main class="public-content-page">
+        <section class="public-page-header">
+          <span class="eyebrow">NEWS</span>
+          <h1>Latest updates from the school community</h1>
+        </section>
+        <div class="public-news-list">
+          <article class="public-card news-card"><h3>Student workshop builds innovation thinking</h3><p>Practical sessions connected students to real-world technical challenges.</p><span>April 24, 2025</span></article>
+          <article class="public-card news-card"><h3>Career guidance prepares learners for next steps</h3><p>Students explored pathways into industry, internships, and further studies.</p><span>May 02, 2025</span></article>
+        </div>
+      </main>
+    `,
+    events: `
+      <main class="public-content-page">
+        <section class="public-page-header">
+          <span class="eyebrow">EVENTS</span>
+          <h1>Upcoming school and community activities</h1>
+        </section>
+        <div class="public-events-list">
+          <article class="public-card event-card"><div class="event-badge">15<br /><small>MAY</small></div><div><h3>Innovation Fair</h3><p>Open to students, parents, and community partners.</p></div></article>
+          <article class="public-card event-card"><div class="event-badge">22<br /><small>MAY</small></div><div><h3>Career Guidance Day</h3><p>Industry mentoring and skills orientation for learners.</p></div></article>
+        </div>
+      </main>
+    `,
+    gallery: `
+      <main class="public-content-page">
+        <section class="public-page-header">
+          <span class="eyebrow">GALLERY</span>
+          <h1>Snapshots from campus and learning spaces</h1>
+        </section>
+        <div class="public-gallery-grid">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=80" alt="Students in workshop" />
+          <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80" alt="Classroom activity" />
+          <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=900&q=80" alt="Technical education" />
+          <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80" alt="Students collaborating" />
+        </div>
+      </main>
+    `,
+    admissions: `
+      <main class="public-content-page">
+        <section class="public-page-header">
+          <span class="eyebrow">ADMISSIONS</span>
+          <h1>Start your journey at APEKI TUMBA TSS</h1>
+        </section>
+        <div class="public-page-grid">
+          <article class="public-card feature-card">
+            <h3>Admission steps</h3>
+            <ol>
+              <li>Explore programs</li>
+              <li>Check requirements</li>
+              <li>Apply</li>
+              <li>Admission process</li>
+            </ol>
+          </article>
+          <article class="public-card feature-card">
+            <h3>Requirements</h3>
+            <p>Academic records, required documents, and a completed demonstration application form.</p>
+          </article>
+        </div>
+      </main>
+    `,
+    contact: `
+      <main class="public-content-page">
+        <section class="public-page-header">
+          <span class="eyebrow">CONTACT</span>
+          <h1>We’re ready to answer your questions</h1>
+        </section>
+        <div class="public-page-grid">
+          <article class="public-card feature-card">
+            <h3>Get in touch</h3>
+            <p>Phone: +250 000 000 000</p>
+            <p>Email: hello@apekitumbatss.rw</p>
+            <p>Location: Tumba, Rulindo District, Rwanda</p>
+          </article>
+        </div>
+      </main>
+    `
+  };
+
+  return `
+    <div class="public-site">
+      <header class="public-nav">
+        <a href="#" class="public-brand" data-public-view="home"><span class="brand-mark">A</span><strong>APEKI TUMBA <span>TSS</span></strong></a>
+        <nav>
+          <button data-public-view="home">Home</button>
+          <button data-public-view="about">About</button>
+          <button data-public-view="programs">Programs</button>
+          <button data-public-view="staff">Staff</button>
+          <button data-public-view="news">News</button>
+          <button data-public-view="events">Events</button>
+          <button data-public-view="gallery">Gallery</button>
+          <button data-public-view="contact">Contact</button>
+        </nav>
+        <button class="button button-primary" data-page="dashboard">Staff sign in <span>↗</span></button>
+      </header>
+      ${pageContent[page] || pageContent.home}
+      <footer class="public-footer">
+        <a href="#" class="public-brand" data-public-view="home"><span class="brand-mark">A</span><strong>APEKI TUMBA <span>TSS</span></strong></a>
+        <span>© ${new Date().getFullYear()} APEKI TUMBA TSS</span>
+        <a href="mailto:hello@apekitumbatss.rw">hello@apekitumbatss.rw</a>
+      </footer>
+    </div>
+  `;
 }
 
 function bindPageEvents() {
@@ -283,6 +511,14 @@ function bindPageEvents() {
     if (currentUser && activePage !== "website") {
       loadAllRecords().then(render).catch((error) => showToast(`Could not refresh records: ${error.message}`));
     }
+  }));
+
+  document.querySelectorAll("[data-public-view]").forEach((button) => button.addEventListener("click", (event) => {
+    event.preventDefault();
+    publicView = button.dataset.publicView || "home";
+    activePage = "website";
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }));
   document.querySelectorAll("[data-open-form]").forEach((button) => button.addEventListener("click", () => openForm(button.dataset.openForm)));
   document.querySelectorAll("[data-edit]").forEach((button) => button.addEventListener("click", () => {
